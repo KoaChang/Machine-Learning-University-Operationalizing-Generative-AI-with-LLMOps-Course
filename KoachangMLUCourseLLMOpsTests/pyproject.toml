@@ -1,0 +1,57 @@
+[project]
+name = "amzn-koachang-mlu-course-llm-ops-tests"
+version = "0.1"
+dependencies = [
+    "amzn-flock-eval >= 1.2.0",
+    "amzn-hydra-test-platform-pytest",
+    "pytest",
+    "requests-auth-aws-sigv4",
+]
+
+
+[project.optional-dependencies]
+tests = [
+    "pytest >= 6"
+]
+dev = [
+    "invoke"
+]
+
+
+[build-system]
+requires = [ "setuptools >= 61", "wheel", "mypy" ]
+build-backend = "setuptools.build_meta"
+
+
+[tool.perupy-delegate]
+command = "invoke"
+
+# Specifies the additional options to pass to `pip install`
+# The default value is "-e .[dev]"
+install = "-e .[dev] -r requirements.txt"
+
+[tool.setuptools.packages.find]
+where = ["src"]  # list of folders that contain the packages (["."] by default)
+
+
+[tool.mypy]
+check_untyped_defs = true
+show_error_codes = true
+pretty = true
+ignore_missing_imports = true
+files = [ "src/**/*.py" ]
+
+
+[tool.black]
+line-length = 100
+
+
+[tool.isort]
+profile = "black"
+line_length = 100
+known_first_party = ["koachang_mlu_course_llm_ops_tests"]
+
+
+[tool.pytest.ini_options]
+addopts = "--durations=5 --color=yes"
+testpaths = [ "test" ]

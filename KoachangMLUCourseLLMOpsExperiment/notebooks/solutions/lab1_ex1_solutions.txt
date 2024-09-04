@@ -1,0 +1,36 @@
+
+# These questions about Lambda are answered correctly
+lambda_questions = [
+    "How is AWS Lambda different from EC2?",
+    "What happens to an AWS Lambda function if a Lambda layer is deleted?",
+    "What architectures does Lambda support?"
+]
+
+# Most of these non-Lambda questions about AWS services lead to errors
+aws_questions = [
+    "What built-in algorithms are supported in SageMaker?",
+    "What languages are covered by Amazon Translate?",
+    "What file types does Amazon Kendra support?",
+]
+
+# These questions unrelated to AWS lead to errors
+unrelated_questions = [
+    "Which movie won an Oscar in 1995?",
+    "What are the differences between alligators and crocodiles?",
+    "What's the capital of Island?",
+]
+
+display(Markdown("### Questions about AWS Lambda"))
+for lambda_q in lambda_questions:
+    display(Markdown(f"**{lambda_q}**"))
+    display(Markdown(make_live_request(lambda_q)))
+
+display(Markdown("### Questions about AWS Services"))
+for aws_q in aws_questions:
+    display(Markdown(f"**{aws_q}**"))
+    display(Markdown(make_live_request(aws_q)))
+
+display(Markdown("### Questions unrelated to AWS Services"))
+for unrelated_q in unrelated_questions:
+    display(Markdown(f"**{unrelated_q}**"))
+    display(Markdown(make_live_request(unrelated_q)))

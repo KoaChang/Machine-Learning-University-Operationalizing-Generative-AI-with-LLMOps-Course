@@ -1,0 +1,18 @@
+
+# Analyze the behaviour of the system for last question versus the first question
+question_1 = "What happens to an AWS Lambda function if a Lambda layer is deleted?"
+question_2 = "What file types does Amazon Kendra support?"
+
+# Notice what comes out of the LLM invocation for both questions:
+display(Markdown("**Output of LLM for first question**"))
+chain = guardrail | retrieve_context | prompt | llm_claude_haiku
+print(chain.invoke(question_1))
+
+display(Markdown("**Output of LLM for second question**"))
+chain = guardrail | retrieve_context | prompt | llm_claude_haiku
+print(chain.invoke(question_2))
+
+# Notice what happens when the output of the LLM goes through the parser
+display(Markdown("**Output of parser for second question**"))
+chain = guardrail | retrieve_context | prompt | llm_claude_haiku | parser
+print(chain.invoke(question_2))

@@ -1,0 +1,36 @@
+'brazil_package_spec@1.0'
+
+common::{
+    name: "KoachangMLUCourseLLMOpsTests",
+    major_version: "1.0",
+
+    dependencies: {
+        default_closure: run,
+        closures: {
+            // This idiomatic package will be empty if consumed as a Peru dependency.
+            run: public:: { include: [self] },
+        },
+    },
+
+    build: {
+        // brazil-build <args> will exec `./build.sh <args>` after setting up the environment
+        command : "perupy-delegate",
+
+        // This doesn't output an idiomatic package, but instead puts together a lambda zip file
+        // with dependencies included.  If you are using layers, you likely want to have separate
+        // packages for those layers so that you can build them independently with a shared package
+        // that defines their runtime version so they both build and test against it specifically
+
+        outputs: {
+            public_dir: "./build"
+        },
+
+        env: {
+          // Prepend the `bin` directory of PeruNPM to PATH before executing build.command.
+          PATH: [
+            (farm "PeruPython" "bin"),
+            (env PATH)
+          ]
+        },
+    },
+}

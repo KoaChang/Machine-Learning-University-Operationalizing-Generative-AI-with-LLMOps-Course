@@ -1,0 +1,3 @@
+artifacts:
+  paths:
+    Lambda.zip: KoachangMLUCourseLLMOpsTests.zip

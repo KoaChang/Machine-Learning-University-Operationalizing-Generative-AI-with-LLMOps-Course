@@ -1,0 +1,23 @@
+
+# Read from a file with extended test cases
+dataset_extended = []
+with open("solutions/test_data/dataset_questions_2.jsonl") as f:
+    for line in f:
+        dataset_extended.append(json.loads(line))
+
+# Prompt the live system to produce answers
+test_dataset_extended = []
+for test_case in dataset_extended:
+    test_case["system_solution"] = make_live_request(test_case["input"])
+    test_dataset_extended.append(test_case)
+
+# Compute metrics
+results_extended = []
+for index, result in enumerate(evaluate_dataset([json.dumps(test_case) for test_case in test_dataset_extended], evaluator)):
+    result = {"dataset_entry": index, "metrics": result.metrics}
+    print(result)
+    results_extended.append(result)
+
+# Aggregate metrics
+agg_results_extended = aggregate_results(results_extended)
+agg_results_extended

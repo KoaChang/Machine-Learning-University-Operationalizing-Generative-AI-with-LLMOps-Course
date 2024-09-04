@@ -1,0 +1,16 @@
+
+# Question and a known answer (ground truth)
+question = "How does AWS Lambda manage dependencies for a function?"
+reference_answer = "AWS Lambda has a feature called Layers, which allows to package and include additional code and dependencies with a Lambda function. This helps manage dependencies more efficiently and reduces the size of the deployment package for the function."
+display(Markdown(f"**Question:**\n{question}"))
+display(Markdown(f"**Reference answer:**\n{reference_answer}"))
+
+# Prompt system to return an answer to the question
+system_answer = make_live_request(question)
+display(Markdown(f"**System answer:**\n{system_answer}"))
+
+# Compute metrics from FlockEval
+metrics = [binary, rougeL, semantic, llm_rating, llm_correctness]
+metrics_names = ["binary", "rougeL", "semantic", "llm_rating", "llm_correctness"]
+for i, metric in enumerate(metrics):
+    print(f"Metric {metrics_names[i]}:\t{metric.evaluate(question, system_answer, reference_answer)}")

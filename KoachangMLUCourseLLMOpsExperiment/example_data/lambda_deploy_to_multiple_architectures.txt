@@ -1,0 +1,82 @@
+##################################################
+Deploy a Lambda Function to Multiple Architectures
+##################################################
+
+.. contents::
+   :local:
+
+You can configure Lambda functions to target the compute architecture of your choice, either ``x86_64``
+or ``arm64`` via the AWS Management console, AWS SDKs, CLI, CDK, or CloudFormation. You need to ensure
+your Lambda function uses the build artifacts of the correct platform for each compute architecture.
+
+
+Enable the version set platforms required by the compute architectures
+======================================================================
+
+Make sure you have enabled all the :ref:`version set platforms <brazilug:concepts-version-set-platforms>`
+required by your compute architecture:
+
+* For ``x86_64`` architecture, enable `AL2_x86_64` platform.
+* For ``arm64`` architecture, enable `AL2_aarch64` platform.
+
+
+Configure the compute architecture with CDK
+===========================================
+
+You can configure the compute architecture by using the :awsdocs:`architecture
+<cdk/api/v1/docs/@aws-cdk_aws-lambda.Function.html#architecture>` prop of the Lambda function
+construct. The following snippet updates an existing Lambda function so it uses ``arm64`` architecture
+in ``us-east-1`` and ``us-west-2``; and use ``x86_64`` architecture for the rest.
+
+.. note::
+
+   For demonstration purposes, the following snippet uses the ``us-east-1`` and ``us-west-2`` regions,
+   but ``arm64`` architecture for Lambda has now expanded support for more regions. You should refer
+   to :rms-feature:`RIP <lambda/lambda-on-arm/>` for the up-to-date list of supported regions.
+
+
+.. code-block:: typescript
+   :emphasize-lines: 7-13,19-21,27
+
+   import { BrazilPackage, LambdaAsset, DeploymentStackProps, Platform } from '@amzn/pipelines';
+   import { Duration } from 'aws-cdk-lib';
+   import { Architecture, Function, Runtime } from 'aws-cdk-lib/aws-lambda';
+
+   constructor(scope: Construct, id: string, readonly props: DeploymentStackProps) {
+
+      let architecture = Architecture.X86_64;
+      let versionSetPlatform = Platform.AL2_X86_64;
+
+      if (['us-east-1', 'us-west-2'].includes(props.env.region)) {
+        architecture = Architecture.ARM_64;
+        versionSetPlatform = Platform.AL2_AARCH64;
+      }
+
+      const lambdaFunction = new Function(this, 'ExampleLambda', {
+        functionName: 'ExampleLambda',
+        code: LambdaAsset.fromBrazil({
+          brazilPackage: BrazilPackage.fromString('ExampleBrazilPackage-1.0'),
+          // Must use different component names for different platform
+          componentName: `ExampleLambda-${architecture.name}`,
+          versionSetPlatform
+        }),
+        handler: 'com.amazon.example.lambda.ExampleLambdaHandlerClass::handler',
+        memorySize: 512,
+        timeout: Duration.seconds(30),
+        runtime: Runtime.JAVA_11,
+        architecture,
+      });
+   }
+
+Because the code change above updates the transformation (i.e. packaging) configuration of your
+pipeline, you need to manually deploy the change once (read more about this caveat in our
+:ref:`troubleshooting guide <troubleshooting-cdk-pipeline-failed-with-old-build-configurations>`):
+
+.. code-block:: bash
+
+   brazil-build && brazil-build deploy:pipeline
+
+.. note::
+
+    If you deploy with both compute architectures in production, you must also deploy with both
+    in pre-prod stages and have integration test running against each of them.

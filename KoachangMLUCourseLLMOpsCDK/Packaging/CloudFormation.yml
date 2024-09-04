@@ -1,0 +1,3 @@
+artifacts:
+  paths:
+    cdk.out/: cdk.out/

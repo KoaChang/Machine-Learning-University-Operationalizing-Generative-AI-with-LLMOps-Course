@@ -1,0 +1,58 @@
+
+import re
+from typing import Optional
+
+...
+
+@tool
+def retrieve_context(query: str) -> dict:
+    """Retrieve the list of documents from Kendra that are relevant to the query"""
+    response = kendra.retrieve(
+        IndexId=KENDRA_INDEX_ID,
+        QueryText=query,
+        PageNumber=1,
+        PageSize=5,
+    )
+    documents = response["ResultItems"]
+    document_ids = [document["DocumentId"] for document in documents]
+    context = "\n".join([document["Content"] for document in documents])
+    return {
+        "question": query,
+        "context": context,
+        "document_ids": document_ids,
+    }
+
+
+# Function to return a link mapping the retrieved document to its URL
+def get_link_from_document_id(document_id: str) -> Optional[str]:
+    if match := re.search("s3://.*?/rag/lambda-developer-guide-231030/(.*).md$", document_id):
+        path = match.group(1)
+        return f"https://docs.aws.amazon.com/lambda/latest/dg/{path}.html"
+
+    if match := re.search("s3://.*?/rag/sagemaker-developer-guide/(.*).md$", document_id):
+        path = match.group(1)
+        return f"https://docs.aws.amazon.com/sagemaker/latest/dg/{path}.html"
+
+    if match := re.search("s3://.*?/rag/blogs/(.*).md$", document_id):
+        path = match.group(1)
+        return f"https://aws.amazon.com/blogs/compute/{path}/"
+
+...
+
+@app.post("/")
+def query_handler() -> str:
+    post_data: dict = app.current_event.json_body
+    question = post_data.get("question")
+    if not question:
+        raise BadRequestError("Request must contain 'question' field")
+
+    with get_bedrock_anthropic_callback() as cb:
+        answer = get_chain().invoke(question)
+        metrics.add_metric(name="InputTokens", unit="Count", value=cb.prompt_tokens)
+        metrics.add_metric(name="OutputTokens", unit="Count", value=cb.completion_tokens)
+        metrics.add_metric(name="TotalTokens", unit="Count", value=cb.total_tokens)
+
+    document_ids = retrieve_context(question)["document_ids"]
+    relevant_links = set([get_link_from_document_id(doc_id) for doc_id in document_ids]) 
+
+    return {"answer": answer.strip(), "relevant_links": list(relevant_links)}

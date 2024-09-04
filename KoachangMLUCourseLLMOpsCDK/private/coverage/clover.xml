@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1723943219084" clover="3.2.0">
+  <project timestamp="1723943219084" name="All files">
+    <metrics statements="92" coveredstatements="89" conditionals="10" coveredconditionals="7" methods="14" coveredmethods="12" elements="116" coveredelements="108" complexity="0" loc="92" ncloc="92" packages="1" files="2" classes="2"/>
+    <file name="dataStack.ts" path="/workplace/koachang/ws_KoachangMLUCourseLLMOps/src/KoachangMLUCourseLLMOpsCDK/lib/dataStack.ts">
+      <metrics statements="46" coveredstatements="44" conditionals="0" coveredconditionals="0" methods="9" coveredmethods="8"/>
+      <line num="1" count="2" type="stmt"/>
+      <line num="2" count="2" type="stmt"/>
+      <line num="4" count="2" type="stmt"/>
+      <line num="5" count="2" type="stmt"/>
+      <line num="6" count="2" type="stmt"/>
+      <line num="7" count="2" type="stmt"/>
+      <line num="8" count="2" type="stmt"/>
+      <line num="9" count="2" type="stmt"/>
+      <line num="10" count="2" type="stmt"/>
+      <line num="11" count="2" type="stmt"/>
+      <line num="12" count="2" type="stmt"/>
+      <line num="13" count="2" type="stmt"/>
+      <line num="19" count="2" type="stmt"/>
+      <line num="23" count="2" type="stmt"/>
+      <line num="25" count="2" type="stmt"/>
+      <line num="26" count="2" type="stmt"/>
+      <line num="27" count="2" type="stmt"/>
+      <line num="28" count="2" type="stmt"/>
+      <line num="29" count="2" type="stmt"/>
+      <line num="30" count="2" type="stmt"/>
+      <line num="31" count="2" type="stmt"/>
+      <line num="32" count="2" type="stmt"/>
+      <line num="36" count="2" type="stmt"/>
+      <line num="60" count="2" type="stmt"/>
+      <line num="64" count="2" type="stmt"/>
+      <line num="77" count="2" type="stmt"/>
+      <line num="78" count="2" type="stmt"/>
+      <line num="86" count="2" type="stmt"/>
+      <line num="90" count="2" type="stmt"/>
+      <line num="92" count="2" type="stmt"/>
+      <line num="95" count="2" type="stmt"/>
+      <line num="107" count="2" type="stmt"/>
+      <line num="110" count="2" type="stmt"/>
+      <line num="117" count="2" type="stmt"/>
+      <line num="121" count="2" type="stmt"/>
+      <line num="135" count="0" type="stmt"/>
+      <line num="136" count="0" type="stmt"/>
+      <line num="140" count="2" type="stmt"/>
+      <line num="156" count="2" type="stmt"/>
+      <line num="161" count="2" type="stmt"/>
+      <line num="177" count="2" type="stmt"/>
+      <line num="178" count="2" type="stmt"/>
+      <line num="180" count="2" type="stmt"/>
+      <line num="184" count="2" type="stmt"/>
+      <line num="200" count="2" type="stmt"/>
+      <line num="205" count="2" type="stmt"/>
+    </file>
+    <file name="serviceStack.ts" path="/workplace/koachang/ws_KoachangMLUCourseLLMOps/src/KoachangMLUCourseLLMOpsCDK/lib/serviceStack.ts">
+      <metrics statements="46" coveredstatements="45" conditionals="10" coveredconditionals="7" methods="5" coveredmethods="4"/>
+      <line num="1" count="1" type="stmt"/>
+      <line num="2" count="1" type="stmt"/>
+      <line num="11" count="1" type="stmt"/>
+      <line num="13" count="1" type="stmt"/>
+      <line num="14" count="1" type="stmt"/>
+      <line num="22" count="1" type="stmt"/>
+      <line num="23" count="1" type="stmt"/>
+      <line num="31" count="1" type="stmt"/>
+      <line num="32" count="1" type="stmt"/>
+      <line num="33" count="1" type="stmt"/>
+      <line num="71" count="1" type="stmt"/>
+      <line num="87" count="1" type="stmt"/>
+      <line num="88" count="2" type="stmt"/>
+      <line num="91" count="1" type="stmt"/>
+      <line num="92" count="1" type="stmt"/>
+      <line num="93" count="1" type="cond" truecount="3" falsecount="1"/>
+      <line num="95" count="1" type="stmt"/>
+      <line num="124" count="1" type="stmt"/>
+      <line num="129" count="1" type="stmt"/>
+      <line num="174" count="1" type="stmt"/>
+      <line num="179" count="1" type="stmt"/>
+      <line num="182" count="1" type="stmt"/>
+      <line num="184" count="1" type="stmt"/>
+      <line num="189" count="1" type="stmt"/>
+      <line num="211" count="1" type="stmt"/>
+      <line num="214" count="1" type="stmt"/>
+      <line num="217" count="1" type="stmt"/>
+      <line num="219" count="1" type="cond" truecount="1" falsecount="0"/>
+      <line num="222" count="1" type="stmt"/>
+      <line num="225" count="1" type="stmt"/>
+      <line num="232" count="1" type="stmt"/>
+      <line num="235" count="1" type="stmt"/>
+      <line num="239" count="1" type="stmt"/>
+      <line num="249" count="1" type="stmt"/>
+      <line num="262" count="1" type="stmt"/>
+      <line num="284" count="1" type="stmt"/>
+      <line num="295" count="1" type="stmt"/>
+      <line num="306" count="1" type="stmt"/>
+      <line num="317" count="1" type="stmt"/>
+      <line num="318" count="1" type="cond" truecount="1" falsecount="0"/>
+      <line num="319" count="1" type="stmt"/>
+      <line num="323" count="1" type="stmt"/>
+      <line num="331" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="334" count="1" type="stmt"/>
+      <line num="340" count="1" type="stmt"/>
+      <line num="359" count="0" type="stmt"/>
+    </file>
+  </project>
+</coverage>

@@ -1,0 +1,30 @@
+'brazil_package_spec@1.0'
+
+common::{
+  name : "KoachangMLUCourseLLMOpsData",
+  major_version : "1.0",
+
+  // Specifies how this source package relates to others.
+  dependencies : {
+    default_closure : run,
+    closures : {
+      run : public::{
+        include : [self]
+      },
+    },
+  },
+
+  // Specifies how to build the package.
+  build : {
+    command : null,
+    outputs : {
+      public_dir : "./public",
+    },
+    env : {
+      PATH : [
+        // Enable this line later when converting this app to a BH Create's source app
+        (env PATH), // include PATH from current env
+      ],
+    },
+  },
+}

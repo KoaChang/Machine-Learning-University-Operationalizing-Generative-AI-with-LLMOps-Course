@@ -1,0 +1,40 @@
+
+'brazil_package_spec@1.0'
+
+common::{
+  name : "KoachangMLUCourseLLMOpsCDK",
+  major_version : "1.0",
+
+  dependencies : {
+    default_closure : run,
+    closures : {
+      run : public::{ include : [ self ] }
+    },
+    build_after: [
+      // Having the Lambda package as a dependency to allow this package to be rebuilt when
+      // the Lambda code changes, and thus update the Lambda function version.
+      "KoachangMLUCourseLLMOps",
+      "KoachangMLUCourseLLMOpsData",
+    ],
+  },
+
+  build : {
+    command : "run-npm",
+    env: {
+      // Prepend the `bin` directory of PeruNPM to PATH before executing build.command.
+      PATH: [
+        (farm "PeruNPM" "bin"),
+        (env PATH)
+      ]
+    },
+    outputs : {
+      // This is required for package to be built on build sandbox which
+      // always looks for the "build" folder after the build even if
+      // we don't emit anything there.
+      create_build_symlink : true,
+      public_dir : "build",
+      // make coverage reports available
+      private_dir : "private",
+    }
+  },
+}

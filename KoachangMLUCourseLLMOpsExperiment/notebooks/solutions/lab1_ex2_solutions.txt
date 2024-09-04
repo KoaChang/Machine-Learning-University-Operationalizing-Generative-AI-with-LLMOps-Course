@@ -1,0 +1,21 @@
+
+# Notice how the answers to this question are essentially the same 
+# regardless whether we send a request to the API endpoint or invoke Bedrock from this notebook
+question = "What happens to an AWS Lambda function if a Lambda layer is deleted?"
+display(Markdown(f"**{question}**"))
+
+display(Markdown("#### API endpoint answer"))
+display(Markdown(make_live_request(question)))
+
+display(Markdown("#### Direct invocation"))
+display(Markdown(generate_answer(question, chain_claude_haiku)))
+
+# Notice how the request fails when asking the following question
+question = "What file types does Amazon Kendra support?"
+display(Markdown(f"**{question}**"))
+
+display(Markdown("#### API endpoint answer"))
+display(Markdown(make_live_request(question)))
+
+display(Markdown("#### Direct invocation"))
+display(Markdown(generate_answer(question, chain_claude_haiku)))

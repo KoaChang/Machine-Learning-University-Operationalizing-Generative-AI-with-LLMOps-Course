@@ -1,0 +1,137 @@
+
+# These questions about Lambda are answered correctly
+lambda_questions = [
+    "How is AWS Lambda different from EC2?",
+    "What happens to an AWS Lambda function if a Lambda layer is deleted?",
+    "What architectures does Lambda support?"
+]
+
+# Most of these non-Lambda questions about AWS services lead to errors
+aws_questions = [
+    "What built-in algorithms are supported in SageMaker?",
+    "What languages are covered by Amazon Translate?",
+    "What file types does Amazon Kendra support?",
+]
+
+# These questions unrelated to AWS lead to errors
+unrelated_questions = [
+    "Which movie won an Oscar in 1995?",
+    "What are the differences between alligators and crocodiles?",
+    "What's the capital of Island?",
+]
+
+all_questions = lambda_questions[:2] + aws_questions[:2] + unrelated_questions[:2]
+
+# This prompt for Claude 3 Haiku forces the model to follow a particular output format
+prompt_enforce = PromptTemplate.from_template(
+    """You act as a AWS Cloud Practitioner and only answer questions about AWS. Read the user's
+question supplied within the <question></question> tags. Then, use the contextual information provided
+above within the <context></context> tags to provide an answer. Do not repeat the context.
+Respond that you don't know if you don't have enough information to answer.
+
+Return your output in <answer></answer> tags as in this example:
+
+<context>
+Example context
+</context>
+
+<question>
+Example question
+</question>
+
+<answer>
+Example answer
+</answer>
+
+Below starts the real task:
+
+<context>
+{context}
+</context>
+
+<question>
+{question}
+</question>
+""")
+
+chain_claude_haiku_enforce = guardrail | retrieve_context | prompt_enforce | llm_claude_haiku | parser | guardrail
+
+display(Markdown("## Direct invocation with Claude 3 Haiku and modified prompt"))
+
+for question in all_questions:
+    display(Markdown(f"**{question}**"))
+    display(Markdown(generate_answer(question, chain_claude_haiku_enforce)))
+
+
+# This calls Claude 3 Sonnet instead of Haiku, without changing the original application prompt
+
+llm_claude_sonnet = ChatBedrock(
+    model_id="anthropic.claude-3-sonnet-20240229-v1:0",
+    credentials_profile_name="MLU-LLMOps-Burner",
+    client=bedrock_runtime,
+    model_kwargs={
+        "max_tokens": 500,
+        "temperature": 0.0,
+        "top_k": 10,
+        "top_p": 1.0,
+    },
+    cache=False,
+)
+
+chain_claude_sonnet = guardrail | retrieve_context | prompt | llm_claude_sonnet | parser | guardrail
+
+display(Markdown("---"))
+display(Markdown("## Direct invocation with Claude 3 Sonnet and original prompt"))
+
+for question in all_questions:
+    display(Markdown(f"**{question}**"))
+    display(Markdown(generate_answer(question, chain_claude_sonnet)))
+
+
+# This calls model Mistral AI with a Mistral-specific prompt and removes the output parser from the chain
+
+from langchain_aws import BedrockLLM
+
+llm_mistral = BedrockLLM(
+    model_id="mistral.mistral-7b-instruct-v0:2",
+    credentials_profile_name="MLU-LLMOps-Burner",
+    client=bedrock_runtime,
+    model_kwargs={
+        "max_tokens": 500,
+        "temperature": 0.0,
+        "top_k": 10,
+        "top_p": 1.0,
+        "stop": ["</s>"]
+    },
+    cache=False,
+)
+
+
+prompt_mistral = PromptTemplate.from_template(
+    """[INST]You act as a AWS Cloud Practitioner and only answer questions about AWS. Read the user's
+question supplied within the <question> tags. Then, use the contextual information provided
+above within the <context> tags to provide an answer. Do not repeat the context.
+Respond that you don't know if you don't have enough information to answer.
+
+<context>
+{context}
+</context>
+
+<question>
+{question}
+</question>
+
+[/INST]
+"""
+)
+
+# This chain removes the output parser
+chain_mistral = guardrail | retrieve_context | prompt_mistral | llm_mistral | guardrail
+
+display(Markdown("---"))
+display(Markdown("## Direct invocation with Mistral 7b and modified prompt"))
+
+# Run only a subset of all questions to avoid Throttling error
+for question in all_questions[2:]:
+    display(Markdown(f"**{question}**"))
+    display(Markdown(generate_answer(question, chain_mistral)))
