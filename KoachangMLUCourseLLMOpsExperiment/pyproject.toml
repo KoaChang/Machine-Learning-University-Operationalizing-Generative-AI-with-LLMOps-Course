@@ -1,0 +1,66 @@
+[project]
+name = "amzn-koachang-mlu-course-llm-ops-experiment"
+version = "0.1"
+dependencies = []
+
+
+[project.optional-dependencies]
+dev = [
+    "amzn-flock-eval >= 1.2.0",
+    "boto3 >=1.34.143",
+    "datasets == 2.15.0",
+    "invoke == 2.2.0",
+    "ipykernel == 6.27.1",
+    "jupyter == 1.0.0",
+    "jupyter_client == 8.6.0",
+    "langchain >= 0.2.6",
+    "langchain-aws >= 0.1.9",
+    "langchain-community >= 0.2.6",
+    "rouge-score == 0.1.2",
+    "nltk == 3.8.1",
+    "lancedb == 0.6.4",
+    "jupyterlab-pygments == 0.2.2",
+    "awscurl",
+]
+
+
+[build-system]
+requires = [
+    "setuptools >= 61",
+    "wheel == 0.42.0",
+    "mypy == 1.7.1",
+]
+build-backend = "setuptools.build_meta"
+
+
+[tool.perupy-delegate]
+command = "invoke"
+
+# Specifies the additional options to pass to `pip install`
+# By default, the value is "-e .[dev]"
+install = "-e .[dev] -r requirements.txt"
+
+[tool.setuptools.packages.find]
+where = ["src"]  # list of folders that contain the packages (["."] by default)
+
+
+[tool.mypy]
+check_untyped_defs = true
+show_error_codes = true
+pretty = true
+ignore_missing_imports = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+warn_unused_configs = true
+files = [ "src/**/*.py" ]
+
+
+[tool.black]
+line-length = 100
+
+
+[tool.isort]
+profile = "black"
+line_length = 100
+known_first_party = ["amzn_personal_playground"]

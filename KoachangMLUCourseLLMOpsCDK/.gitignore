@@ -1,0 +1,6 @@
+.DS_Store
+.eslintcache
+build
+dist/
+node_modules
+.npmrc

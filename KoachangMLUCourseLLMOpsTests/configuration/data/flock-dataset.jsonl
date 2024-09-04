@@ -1,0 +1,2 @@
+{"input": "What architectures does Lambda support?", "ground_truth_solution": "x86_64 and arm64"}
+{"input": "What operating systems does Lambda base docker image support?", "ground_truth_solution": "Amazon Linux, Amazon Linux 2, and Amazon Linux 2023"}

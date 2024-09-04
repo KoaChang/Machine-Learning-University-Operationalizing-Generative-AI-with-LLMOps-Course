@@ -1,0 +1,12 @@
+# Virtual environment
+.delegate-venv
+.venv
+
+# Byte-compiled / optimized / DLL files
+__pycache__
+*.py[cod]
+
+*.egg-info/
+build
+.coverage
+.ruff_cache
